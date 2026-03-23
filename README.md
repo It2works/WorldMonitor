@@ -78,7 +78,7 @@ Inspired by [koala73/worldmonitor](https://github.com/koala73/worldmonitor).
 ### 1. Clone & Install
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/It2works/WorldMonitor.git
 cd worldmonitor
 
 # Install backend dependencies
@@ -159,7 +159,7 @@ curl -fsSL https://ollama.ai/install.sh | sh
 ollama pull qwen2:1.5b
 
 # 4. Clone and set up
-git clone <your-repo-url>
+git clone https://github.com/It2works/WorldMonitor.git
 cd worldmonitor/backend
 npm install
 

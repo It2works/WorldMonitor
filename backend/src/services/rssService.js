@@ -61,7 +61,7 @@ async function fetchFeed(feed) {
 
         // Update last_fetched_at
         const db = getDb();
-        db.prepare('UPDATE feeds SET last_fetched_at = datetime("now") WHERE id = ?').run(feed.id);
+        db.prepare("UPDATE feeds SET last_fetched_at = datetime('now') WHERE id = ?").run(feed.id);
 
         return { feed: feed.name, inserted, total: (result.items || []).length };
     } catch (err) {
