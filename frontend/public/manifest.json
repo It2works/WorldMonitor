@@ -1,0 +1,9 @@
+{
+    "name": "World Monitor",
+    "short_name": "WorldMon",
+    "description": "Intelligence Dashboard — News, Map, AI Briefs",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#060a13",
+    "theme_color": "#00d4ff"
+}

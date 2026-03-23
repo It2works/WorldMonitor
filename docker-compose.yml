@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - DATABASE_PATH=/app/data/worldmonitor.db
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODEL=qwen2:1.5b
+      - NODE_ENV=production
+    volumes:
+      - backend-data:/app/data
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost:3001
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3001
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # Ollama LLM
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    restart: unless-stopped
+
+  # Automated Model Puller
+  ollama-pull:
+    image: alpine:latest
+    depends_on:
+      - ollama
+    entrypoint: /bin/sh
+    command: >
+      -c "apk add --no-cache curl &&
+          echo 'Waiting for Ollama to start...' &&
+          while ! curl -s http://ollama:11434/api/tags > /dev/null; do sleep 2; done &&
+          echo 'Pulling qwen2:1.5b model...' &&
+          curl -X POST http://ollama:11434/api/pull -d '{\"name\": \"qwen2:1.5b\"}' &&
+          echo 'Model pulled successfully!'"
+
+volumes:
+  backend-data:
+  ollama-data:

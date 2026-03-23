@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+worldmonitor.db*
+.env
+.git
+.gitignore
+Dockerfile
+.dockerignore
